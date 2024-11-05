@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script src="create_table.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script>
+	$(function(){
+		$("#emp_search").click(function(){
+			$.ajax({
+				url:"emplist.xml",
+				dataType:"xml",
+				success:function(data){
+					let empRowList = $(data).find("ROW");
+					//console.log(empRowList);
+					$("body").append(makeTable(empRowList));
+				},
+				error:function(){
+					alert("실패");
+				}
+			})	;
+		});
+	});
+</script>
+<body>
+<h1>데이터 가져오기</h1>
+<fieldset>
+	<legend>사원 전체 조회</legend>
+	<input type="button" value="조회" id="emp_search">
+</fieldset>
+<hr>
+
+</body>
+</html>

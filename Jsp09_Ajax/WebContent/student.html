@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+	function getParameterValues(){
+		let name = "name=" + $("#name").val();
+		let kor = "kor=" + $("#kor").val();
+		let eng = "eng=" + $("#eng").val();
+		let math = "math=" + $("#math").val();
+		
+		return "?"+name+"&" + kor + "&"+ eng + "&" + math;
+ 	}
+	/*
+	JSON(JavaScript Object Notation) : 네트워크를 통해 데이터를 주고 받는데 자주 사용되는 경량의 데이터 형식
+	{name:value, name:value, ...} name,value 쌍으로 이루어져 있다.
+	*/
+	$(function(){
+		$("#process").click(function(){
+			$.ajax({
+				url:"CalScore"+getParameterValues(),	// 전송(통신)할 url, 요청 url
+				//data:{kor:90}				// 서버에 전송할 데이터
+				dataType:"json",			// 전송받을 데이터 타입
+				success:function(msg){
+					alert(msg);				// 통신에 성공했을 때 실행
+					console.log(msg);
+					$("#res").html(msg.name+"의 총점은" + msg.sum+"이고, 평균은" + msg.avg+"입니다.");
+				},	
+				error:function(){
+					alert("통신 실패");		// 통신에 실패했을 때 실행
+				}			
+			})
+		});
+	});
+</script>
+<body>
+<h1>점수 입력</h1>
+이름 : <input type="text" id="name"><br>
+국어 : <input type="text" id="kor"><br>
+영어 : <input type="text" id="eng"><br>
+수학 : <input type="text" id="math"><br>
+
+<input type="button" id="process" value="성적처리"><br>
+<hr>
+<div id="res"></div>
+
+</body>
+</html>

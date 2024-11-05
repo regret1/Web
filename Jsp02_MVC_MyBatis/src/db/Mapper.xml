@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.my.mvc">
+  	<resultMap type="com.mvc.dto.MVCBoardDto" id="mvcmap">
+		<result property="seq" column ="SEQ"/>
+		<result property="writer" column ="WRITER"/>
+		<result property="title" column ="TITLE"/>
+		<result property="content" column ="CONTENT"/>
+		<result property="regdate" column ="REGDATE"/>
+  	</resultMap>
+  	
+  	
+  	<select id="selectAll" resultType="BDto">
+  		SELECT * FROM MVCBOARD
+  	</select>
+  	
+  	<select id="selectOne" resultMap="mvcmap">
+  		SELECT * FROM MVCBOARD WHERE SEQ = #{seq}
+  	</select>
+  	
+  	<insert id="insert" parameterType="BDto">
+  		INSERT INTO MVCBOARD VALUES(SEQ_MVCBOARD.NEXTVAL,#{writer},#{title},#{content},CURRENT_DATE)
+  	</insert>
+  	
+  	<update id="update" parameterType="com.mvc.dto.MVCBoardDto">
+  		UPDATE MVCBOARD SET TITLE=#{title},CONTENT=#{content}  WHERE SEQ=#{seq}
+  	</update>
+  	
+  	<delete id="delete">
+  		DELETE FROM MVCBOARD WHERE SEQ=#{seq}
+  	</delete>
+  	
+  	<delete id="muldel">
+  		DELETE FROM MVCBOARD WHERE SEQ IN
+  		<foreach collection="seq" item="no" open="(" separator="," close=")">
+  			#{no}
+  		</foreach>
+  	</delete>
+  </mapper>

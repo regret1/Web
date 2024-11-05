@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script>
+	$(function(){
+		$("#emp_search").click(function(){
+			let empid = $("input[name=empid]").val();
+			
+			if(empid.length>2 && empid!=""){
+				$.ajax({
+					url:"emplist.xml",
+					dataType:"xml",
+					success:function(data){
+						let empInfo = $(data).find("EMPLOYEE_ID:contains("+empid+")").parent();
+						if((empInfo).is("ROW")){
+							$("table input").each(function(i){
+								$(this).val($(empInfo).children().eq(i).text());
+							});
+						}else{
+							alert("검색 대상이 존재하지 않습니다.");
+						}
+					},
+					error:function(){
+						alert("실패ㅠ");
+					}
+				});
+			}else{
+				alert("사원번호를 제대로 입력해 주세요!!");
+			}
+		});
+	});
+</script>
+<body>
+<h1>데이터 확인</h1>
+<fieldset>
+	<legend>사원정보 조회</legend>
+	<input type="text" name="empid">
+	<input type="button" id="emp_search" value="조회">
+</fieldset>
+<hr>
+<table>
+	<tr>
+		<th>사원번호</th>
+		<td><input type="text" name="empNum"></td>
+	</tr>
+	<tr>
+		<th>이 름</th>
+		<td><input type="text" name="lastName"></td>
+	</tr>
+	<tr>
+		<th>이메일</th>
+		<td><input type="text" name="email"></td>
+	</tr>
+	<tr>
+		<th>전화번호</th>
+		<td><input type="text" name="phone"></td>
+	</tr>
+	<tr>
+		<th>입사일</th>
+		<td><input type="text" name="hire"></td>
+	</tr>
+</table>
+</body>
+</html>
